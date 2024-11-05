@@ -17,6 +17,12 @@ class ArticleController extends Controller
         return view('articles.index', compact('articles'));
     }
 
+    public function refreshArticles(){
+        $this->getLeMondeArticles();
+
+        return redirect()->route('articles.index')->with('success','Les articles ont été actualisé.');
+    }
+
     
     public function getJson()
     {

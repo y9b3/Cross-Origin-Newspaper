@@ -13,6 +13,7 @@ Route::get('/home', function () {
     
 });
 
-Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');;
 Route::get('/articles/json', [ArticleController::class, 'getJson']);
 Route::get('/lemonde/articles', [ArticleController::class, 'getLeMondeArticles']);
+Route::get('/articles/refresh', [ArticleController::class, 'refreshArticles'])->name('articles.refresh');
