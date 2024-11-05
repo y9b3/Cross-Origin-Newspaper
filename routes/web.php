@@ -9,8 +9,10 @@ Route::get('/', function () {
 
 
 Route::get('/home', function () {
-    return view('home'); // Utilise la vue home.blade.php
+    return view('home'); 
+    
 });
 
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/articles/json', [ArticleController::class, 'getJson']);
+Route::get('/lemonde/articles', [ArticleController::class, 'getLeMondeArticles']);
