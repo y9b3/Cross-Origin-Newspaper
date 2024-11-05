@@ -26,9 +26,9 @@ class ArticleController extends Controller
 
     public function getLeMondeArticles()
 {
-    // Obtenir la date d'aujourd'hui pour la requête
-    $date = now()->toDateString();
-    $response = Http::get("https://api-catch-the-dev.microsoc.fr/lemonde?get={$date}");
+    
+    $today = now()->toDateString();
+    $response = Http::get("https://api-catch-the-dev.microsoc.fr/lemonde?date=".$today);
 
     if ($response->successful()) {
         $articles = $response->json()['data'];

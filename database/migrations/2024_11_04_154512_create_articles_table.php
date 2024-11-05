@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title'); 
             $table->string('author'); 
-            $table->date('publication_date'); 
+            $table->datetime('publication_date'); 
             $table->text('content'); 
             $table->foreignId('source_id')->constrained('sources'); 
             $table->foreignId('category_id')->constrained('categories'); 
