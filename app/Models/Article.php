@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Article extends Model{
     use HasFactory;
 
-    protected $filiable = [
+    protected $fillable = [
         'title',
         'author',
         'publication_date',
