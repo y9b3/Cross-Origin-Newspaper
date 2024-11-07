@@ -22,14 +22,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>Liste des Articles</h1>
+    <h1>Liste des Articles - Bienvenue, {{ auth()->user()->name }}</h1>
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
         <a href="{{ route('articles.refresh') }}" class="custom-button">Actualiser les Articles</a>
-
+        <a href="{{ route('dashboard') }}" class="custom-button">Profile</a>
         <ul>
             @foreach($articles as $article)
                 <li>
