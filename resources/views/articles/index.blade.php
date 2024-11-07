@@ -6,30 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Articles</title>
     <style>
-    .custom-button {
-        background-color: #007BFF;
-        color: #FFFFFF;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 5px;
-        display: inline-block;
-    }
+        .custom-button {
+            background-color: #007BFF;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-right: 10px;
+        }
 
-    .custom-button:hover {
-        background-color: #0056b3;
-    }
-</style>
+        .custom-button:hover {
+            background-color: #0056b3;
+        }
+
+        .filter-form {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-    <h1>Liste des Articles - Bienvenue, {{ auth()->user()->name }}</h1>
+        <h1>Liste des Articles - Bienvenue, {{ auth()->user()->name }}</h1>
+
+        <!-- Message de success si les articles sont actualiser -->
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
+
         <a href="{{ route('articles.refresh') }}" class="custom-button">Actualiser les Articles</a>
         <a href="{{ route('dashboard') }}" class="custom-button">Profile</a>
+        <form action="{{ route('articles.index') }}" method="GET" class="filter-form">
+            <label for="category">Catégorie:</label>
+            <select name="category" id="category">
+                <option value="">Toutes</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            <label for="date">Date de publication:</label>
+            <input type="date" name="date" id="date" value="{{ request('date') }}">
+
+            <button type="submit" class="custom-button">Filtrer</button>
+        </form>
+
+        <!-- Liste des articles -->
         <ul>
             @foreach($articles as $article)
                 <li>

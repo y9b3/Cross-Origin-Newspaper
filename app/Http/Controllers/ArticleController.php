@@ -11,11 +11,22 @@ use App\Models\Category;
 class ArticleController extends Controller
 {
     
-    public function index()
-    {
-        $articles = Article::orderBy('publication_date','desc')->get();
-        return view('articles.index', compact('articles'));
+    public function index(Request $request)
+{
+    
+    $categories = Category::all();
+    $query = Article::with('source', 'category');
+    if ($request->filled('category')) {
+        $query->where('category_id', $request->category);
     }
+    if ($request->filled('date')) {
+        $query->whereDate('publication_date', $request->date);
+    }
+    $articles = $query->orderBy('publication_date', 'desc')->get();
+
+    return view('articles.index', compact('articles', 'categories'));
+}
+
 
     public function refreshArticles(){
         $this->getLeMondeArticles();
@@ -69,9 +80,10 @@ class ArticleController extends Controller
 public function getLequipeArticles()
 {
     
-    $response = Http::get('https://api-catch-the-dev.microsoc.fr/lequipe', [
-        'access_token' => 'vQS97b12DxqeAqs15CbvSQdmBP13'
-    ]);
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer vQS97b12DxqeAqs15CbvSQdmBP13',
+    ])->get('https://api-catch-the-dev.microsoc.fr/lequipe');
+   
 
     if ($response->successful()) {
         $articles = $response->json()['data'];
