@@ -11,7 +11,11 @@ use App\Models\Category;
 class ArticleController extends Controller
 {
     
-   
+    public function index()
+    {
+        $articles = Article::orderBy('publication_date','desc')->get();
+        return view('articles.index', compact('articles'));
+    }
 
     public function refreshArticles(){
         $this->getLeMondeArticles();
