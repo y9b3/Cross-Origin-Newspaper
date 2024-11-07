@@ -11,11 +11,7 @@ use App\Models\Category;
 class ArticleController extends Controller
 {
     
-    public function index()
-    {
-        $articles = Article::with(['source', 'category'])->get();
-        return view('articles.index', compact('articles'));
-    }
+   
 
     public function refreshArticles(){
         $this->getLeMondeArticles();
@@ -66,5 +62,38 @@ class ArticleController extends Controller
         return response()->json(['error' => 'Failed to fetch articles'], 500);
     }
 }
+public function getLequipeArticles()
+{
+    
+    $response = Http::get('https://api-catch-the-dev.microsoc.fr/lequipe', [
+        'access_token' => 'vQS97b12DxqeAqs15CbvSQdmBP13'
+    ]);
+
+    if ($response->successful()) {
+        $articles = $response->json()['data'];
+
+        foreach ($articles as $articleData) {
+            $source = Source::firstOrCreate(['name' => 'L\'Équipe']);
+            $category = Category::firstOrCreate(['name' => $articleData['category']['name']]);
+            $existingArticle = Article::where('title', $articleData['title'])->first();
+
+            if (!$existingArticle) {
+                Article::create([
+                    'title' => $articleData['title'],
+                    'author' => $articleData['author']['first_name'] . ' ' . $articleData['author']['last_name'],
+                    'publication_date' => $articleData['created_at'],
+                    'content' => $articleData['content'],
+                    'source_id' => $source->id,
+                    'category_id' => $category->id,
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Articles de L\'Équipe enregistrés avec succès.']);
+    } else {
+        return response()->json(['error' => 'Dommage', 'details' => $response->body()], 500);
+    }
+}
+
 
 }  
