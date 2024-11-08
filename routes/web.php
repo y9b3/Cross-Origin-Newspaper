@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');;
     Route::get('/articles/json', [ArticleController::class, 'getJson']);
     Route::get('/lemonde/articles', [ArticleController::class, 'getLeMondeArticles']);
+    Route::get('/lequipe/articles', [ArticleController::class, 'getLequipeArticles']);
     Route::get('/articles/refresh', [ArticleController::class, 'refreshArticles'])->name('articles.refresh');
 });
 
